@@ -1,45 +1,46 @@
 from rest_framework import generics
-from apps.material_type.api.serializers import MaterialTypeSerializer
-from apps.material_type.models import MaterialType
 from config.util.mixins.BasicCustomMixin import CustomListCreateMixin, CustomRetrieveUpdateDestroyMixin
 from config.util.mixins.QueryParamsFilterMixin import BasicQueryParamsFilterMixin
 from rest_framework.permissions import IsAuthenticated
 from config.util.permissions.GroupPermission import GroupPermission
+from apps.wastage.api.serializers import WastageSerializer
+from apps.wastage.models import Wastage
+from config.util.response_handler.custom_response_handler import custom_response_handler as custom_resp_hand
 
-class MaterialTypeListCreateAPIView(BasicQueryParamsFilterMixin, CustomListCreateMixin,generics.ListCreateAPIView):
+class WastageListCreateAPIView(BasicQueryParamsFilterMixin, CustomListCreateMixin, generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
     permission_classes = [IsAuthenticated, GroupPermission]
-    required_permissions = ['view_materialtype', 'add_materialtype']
-    queryset = MaterialType.objects.all().order_by('id')
+    required_permissions = ['view_wastage', 'add_wastage']
+    queryset = Wastage.objects.all().order_by('id')
 
     def get_serializer_class(self):
-        return MaterialTypeSerializer
-    
+        return WastageSerializer
+
     def list(self, request, *args, **kwargs):
         return self.custom_list_response(
             queryset=self.get_queryset(),
             serializer_class=self.get_serializer_class()
         )
-    
+
     def create(self, request, *args, **kwargs):
         return CustomListCreateMixin.create(self, request, *args, **kwargs)
+    
+    # Overrider perform create method to set requested user
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return self.filter_queryset(queryset, name='name', status='status')
+        return self.filter_queryset(queryset)
 
-class MaterialTypeRetrieveUpdateDestroyAPIView(CustomRetrieveUpdateDestroyMixin, generics.RetrieveUpdateDestroyAPIView):
+class WastageRetrieveUpdateDestroyAPIView(CustomRetrieveUpdateDestroyMixin, generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
     permission_classes = [IsAuthenticated, GroupPermission]
-    required_permissions = ['change_materialtype', 'delete_materialtype']
-    queryset = MaterialType.objects.all()
+    required_permissions = ['change_wastage', 'delete_wastage']
+    queryset = Wastage.objects.all()
 
     def get_serializer_class(self):
-        return MaterialTypeSerializer
+        return WastageSerializer
     
-    def retrieve(self, request, *args, **kwargs):
-        return CustomRetrieveUpdateDestroyMixin.retrieve(self, request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        return CustomRetrieveUpdateDestroyMixin.update(self, request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        return CustomRetrieveUpdateDestroyMixin.destroy(self, request, *args, **kwargs)
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)

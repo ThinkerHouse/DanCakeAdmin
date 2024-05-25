@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import MaterialTypeListCreateAPIView, MaterialTypeRetrieveUpdateDestroyAPIView
+from .views import WastageListCreateAPIView, WastageRetrieveUpdateDestroyAPIView
 
 urlpatterns = [
-    path('', MaterialTypeListCreateAPIView.as_view()),
-    path('<int:pk>', MaterialTypeRetrieveUpdateDestroyAPIView.as_view())
+    path('', WastageListCreateAPIView.as_view()),
+    path('<int:pk>', WastageRetrieveUpdateDestroyAPIView.as_view())
 ]
 
