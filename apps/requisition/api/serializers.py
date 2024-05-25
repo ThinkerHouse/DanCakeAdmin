@@ -7,22 +7,25 @@ from config.util.serializers.serializers_utils import get_created_by, get_update
 
 class RequisitionItemSerializer(serializers.ModelSerializer):
     material_info = serializers.SerializerMethodField(read_only=True)
-    unit_info = serializers.SerializerMethodField(read_only=True)
+    # unit_info = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = RequisitionItem
-        fields = ['id','unit', 'unit_info', 'material', 'material_info', 'quantity']
+        # fields = ['id','unit', 'unit_info', 'material', 'material_info', 'quantity']
+        fields = ['id', 'material', 'material_info', 'quantity']
 
-    def get_unit_info(self, instance):
-        return {
-            'id': instance.unit.id,
-            'name': instance.unit.name,
-        }
+    # def get_unit_info(self, instance):
+    #     return {
+    #         'id': instance.unit.id,
+    #         'name': instance.unit.name,
+    #     }
     
     def get_material_info(self, instance):
         return {
             'id': instance.material.id,
             'name': instance.material.name,
+            'unit': instance.material.unit.name,
+            'unit_shortname': instance.material.unit.short_name,
         }
 
 class RequisitionSerializer(serializers.ModelSerializer):
@@ -79,7 +82,7 @@ class RequisitionSerializer(serializers.ModelSerializer):
                         try:
                             item = instance.requisition_items.get(pk=item_id)
                             item.material = item_data.get('material', item.material)
-                            item.unit = item_data.get('unit', item.unit)
+                            # item.unit = item_data.get('unit', item.unit)
                             item.quantity = item_data.get('quantity', item.quantity)
                             item.save()
                         except RequisitionItem.DoesNotExist:
@@ -95,7 +98,6 @@ class RequisitionSerializer(serializers.ModelSerializer):
 
             except Exception as e:
                 # Rollback transaction if any exception occurs
-                
                 transaction.set_rollback(True)
 
     def get_updated_by_info(self, instance):

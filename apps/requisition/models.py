@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
 from apps.users.models import User
-from apps.unit.models import Unit
+# from apps.unit.models import Unit
 from apps.department.models import Department
 from apps.production.models import Production
 from apps.material.models import Material
@@ -43,7 +43,7 @@ class RequisitionItem(models.Model):
         db_table = 'requisition_items'
         
     requisition = models.ForeignKey(Requisition, related_name="requisition_items", on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, related_name='requisition_unit_info', on_delete=models.CASCADE)
+    # unit = models.ForeignKey(Unit, related_name='requisition_unit_info', on_delete=models.CASCADE)
     material = models.ForeignKey(Material, related_name='requisition_material_info', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 

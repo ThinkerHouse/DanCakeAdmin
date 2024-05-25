@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'apps.received_order',
     'apps.recipe',
     'apps.returns',
+    'apps.wastage',
 ]
 
 MIDDLEWARE = [

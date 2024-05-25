@@ -39,4 +39,5 @@ urlpatterns = [
     path('api/received_orders/', include('apps.received_order.api.urls')),
     path('api/recipies/', include('apps.recipe.api.urls')),
     path('api/return/', include('apps.returns.api.urls')),
+    path('api/wastages/', include('apps.wastage.api.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
