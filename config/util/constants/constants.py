@@ -45,3 +45,14 @@ RETURN_STATUS_CHOICE = [
     ('pending', 'Pending'),
     ('returned', 'Returned'),
 ]
+
+WASTAGE_FROM_CHOICE = [
+    ('storage', 'Storage'),
+    ('production', 'Production'),
+    ('finish_good', 'Finish Good'),
+]
+
+WASTAGE_TYPE_CHOICE = [
+    ('actual', 'Actual'),
+    ('overflow', 'Overflow'),
+]
