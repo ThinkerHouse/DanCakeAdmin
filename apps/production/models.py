@@ -18,7 +18,7 @@ class Production(models.Model):
     delivered_at = models.DateTimeField(blank=True, null=True, auto_now=True)
     remarks = models.TextField(blank=True)
     status = models.CharField(choices=APPROVAL_STATUS_CHOICE, default='pending')
-    meta_data = models.JSONField(blank=True)
+    meta_data = models.JSONField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='production_created_by')
     approved_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='production_approved_by', null=True)
     updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='production_updated_by', null=True)
@@ -40,7 +40,7 @@ class ProductionItem(models.Model):
         db_table = 'production_items'
         
     production = models.ForeignKey(Production, related_name="production_items", on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, related_name='unit_info', on_delete=models.CASCADE)
+    # unit = models.ForeignKey(Unit, related_name='unit_info', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='product_info', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
