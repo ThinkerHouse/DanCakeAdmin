@@ -6,14 +6,14 @@ from config.util.serializers.serializers_utils import get_created_by, get_update
 
 class ProductionItemSerializer(serializers.ModelSerializer):
     product_info = serializers.SerializerMethodField(read_only=True)
-    unit_info = serializers.SerializerMethodField(read_only=True)
+    # unit_info = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = ProductionItem
-        fields = ['id','unit', 'unit_info', 'product', 'product_info', 'quantity']
+        fields = ['id', 'product', 'product_info', 'quantity']
 
-    def get_unit_info(self, instance):
-        return get_unit(instance)
+    # def get_unit_info(self, instance):
+    #     return get_unit(instance)
     
     def get_product_info(self, instance):
         return get_product(instance)
@@ -70,7 +70,7 @@ class ProductionSerializer(serializers.ModelSerializer):
                         try:
                             item = instance.production_items.get(pk=item_id)
                             item.material = item_data.get('material', item.material)
-                            item.unit = item_data.get('unit', item.unit)
+                            # item.unit = item_data.get('unit', item.unit)
                             item.quantity = item_data.get('quantity', item.quantity)
                             item.save()
                         except ProductionItem.DoesNotExist:
@@ -78,7 +78,7 @@ class ProductionSerializer(serializers.ModelSerializer):
                             pass
                     else:
                         # If item has no id, create new item
-                        new_items.append(ProductionItem(purchase_order=instance, **item_data))
+                        new_items.append(ProductionItem(production=instance, **item_data))
 
                 # Bulk create new items
                 ProductionItem.objects.bulk_create(new_items)

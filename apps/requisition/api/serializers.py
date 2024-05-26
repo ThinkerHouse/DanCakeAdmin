@@ -90,7 +90,7 @@ class RequisitionSerializer(serializers.ModelSerializer):
                             pass
                     else:
                         # If item has no id, create new item
-                        new_items.append(RequisitionItem(purchase_order=instance, **item_data))
+                        new_items.append(RequisitionItem(requisition=instance, **item_data))
 
                 # Bulk create new items
                 RequisitionItem.objects.bulk_create(new_items)

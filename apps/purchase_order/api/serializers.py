@@ -84,7 +84,7 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
                             item = instance.purchase_order_items.get(pk=item_id)
                             item.material = item_data.get('material', item.material)
                             item.quantity = item_data.get('quantity', item.quantity)
-                            item.unit_price = item_data.get('unit_price', item.unit_price)
+                            # item.unit_price = item_data.get('unit_price', item.unit_price)
                             item.total = item_data.get('total', item.total)
                             item.save()
                         except PurchaseOrderItem.DoesNotExist:
